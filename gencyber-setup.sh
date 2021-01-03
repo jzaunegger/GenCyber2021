@@ -4,6 +4,7 @@
 # Author: Daniel Saylor
 # git clone https://github.com/slayersec/GenCyber2021
 # Usage: sudo ./Configure
+# Test Change
 
 check_for_root () {
 	if [ "$EUID" -ne 0 ]

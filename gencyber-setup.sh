@@ -6,6 +6,7 @@
 # Usage: sudo ./gencyber-setup.sh
 # Test Change
 
+finduser=$(logname)
 check_for_root () {
 	if [ "$EUID" -ne 0 ]
 		then echo -e "\n\n Script must be run with sudo ./gencyber-setup.sh or as root \n"
@@ -27,8 +28,9 @@ install_tools() {
 	}
 
 setup_environment() {
-	cd ~/Desktop
+	cd /home/$finduser/Desktop
 	git clone https://github.com/slayersec/GencyberSteganography
+	chown -R $finduser:$finduser GencyberSteganography
 	}
 
 

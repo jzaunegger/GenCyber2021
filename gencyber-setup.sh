@@ -24,12 +24,12 @@ install_tools() {
 	apt -y install outguess
 	apt -y install foremost
 	echo "Operation completed!"
-}
+	}
 
 setup_environment() {
 	cd ~/Desktop
 	git clone https://github.com/slayersec/GencyberSteganography
-}
+	}
 
 
 check_for_root

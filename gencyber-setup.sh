@@ -14,13 +14,15 @@ check_for_root () {
 	}
 
 install_tools() {
-	sudo apt -y install wireshark
-	sudo apt -y install ghex -fix-missing
-	sudo apt -y install binwalk
-	sudo apt -y install gedit
-	sudo apt -y install steghide
-	sudo apt -y install outguess
-	sudo apt -y install foremost
+	apt update	
+	apt -y install wireshark
+	apt -y install ghex 
+	apt -y install ghex --fix-missing
+	apt -y install binwalk
+	apt -y install gedit
+	apt -y install steghide
+	apt -y install outguess
+	apt -y install foremost
 	echo "Operation completed!"
 }
 

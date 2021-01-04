@@ -29,8 +29,11 @@ install_tools() {
 
 setup_environment() {
 	cd /home/$finduser/Desktop
+	rm -rf GencyberSteganography/
 	git clone https://github.com/slayersec/GencyberSteganography
 	chown -R $finduser:$finduser GencyberSteganography
+	echo -e "\n\n\n Operations completed! You can begin the lab by going to your desktop"
+	echo -e "\n A folder is there named 'GencyberSteganography.' Check there to start the lab!"
 	}
 
 

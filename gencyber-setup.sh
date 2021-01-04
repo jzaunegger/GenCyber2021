@@ -24,8 +24,15 @@ install_tools() {
 	echo "Operation completed!"
 }
 
+setup_environment() {
+	cd ~/Desktop
+	git clone https://github.com/slayersec/GencyberSteganography
+}
+
+
 check_for_root
 install_tools
+setup_environment
 
 
 

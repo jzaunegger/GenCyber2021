@@ -38,8 +38,8 @@ install_teamviewer() {
 	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb -O /tmp/teamviewer-host_armhf.deb
 	dpkg -i /tmp/teamviewer-host_armhf.deb 
 	apt --fix-broken install
-#	systemctl enable teamviewerd
-#	systemctl start teamviewerd
+	systemctl enable teamviewerd
+	systemctl start teamviewerd
 	teamviewer --daemon start
 	echo Setting random password...
 	teamviewer passwd "$password"

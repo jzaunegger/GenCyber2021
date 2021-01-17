@@ -4,7 +4,6 @@
 # Author: Daniel Saylor
 # git clone https://github.com/slayersec/GenCyber2021
 # Usage: sudo ./gencyber-setup.sh
-
 finduser=$(logname)
 connectid=""
 password=""
@@ -36,21 +35,25 @@ install_tools() {
 	}
 
 install_teamviewer() {
-	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb
-	dpkg -i teamviewer-host_armhf.deb 
+	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb -O /tmp/teamviewer-host_armhf.deb
+	dpkg -i /tmp/teamviewer-host_armhf.deb 
 	apt --fix-broken install
 	systemctl enable teamviewerd
 	systemctl start teamviewerd
 	echo Setting random password...
 	teamviewer passwd "$password"
+	rm -f /tmp/teamviewer-host_armhf.deb
 	}
 
 
 setup_environment() {
+	# THESE 2 LINES COULD BE ONE rm -rf /home/$finduser/Desktop/GencyberSteganography/
 	cd /home/$finduser/Desktop
 	rm -rf GencyberSteganography/
 	git clone https://github.com/slayersec/GencyberSteganography
-	chown -R $findu-ser:$finduser GencyberSteganography
+
+	chown -R $finduser:$finduser /home/$finduser/Desktop/GencyberSteganography
+
 	echo -e "\n\n\n Operations completed! You can begin the lab by going to your desktop"
 	echo -e "\n A folder is there named 'GencyberSteganography.' Check there to begin!"
 	}

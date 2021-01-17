@@ -4,13 +4,15 @@
 # Author: Daniel Saylor
 # git clone https://github.com/slayersec/GenCyber2021
 # Usage: sudo ./gencyber-setup.sh
+
 finduser=$(logname)
 connectid=""
 password=""
+
 check_for_root () {
 	if [ "$EUID" -ne 0 ]
-		then echo -e "\n\n Script must be run with sudo ./gencyber-setup.sh or as root \n"
-		exit
+	 then echo -e "\n\n Script must be run with sudo ./gencyber-setup.sh or as root \n"
+	 exit
 	fi
 	}
 
@@ -35,14 +37,17 @@ install_tools() {
 	}
 
 install_teamviewer() {
-	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb -O /tmp/teamviewer-host_armhf.deb
+	echo -e "Stopping any teamviewerd service if it exists, ignore any error here "        
+	systemctl disable teamviewerd 
+        systemctl stop teamviewerd 
+     	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb -O /tmp/teamviewer-host_armhf.deb
 	dpkg -i /tmp/teamviewer-host_armhf.deb 
 	apt --fix-broken install
-	systemctl enable teamviewerd
-	systemctl start teamviewerd
-	teamviewer --daemon start
+        systemctl enable teamviewerd
+        systemctl start teamviewerd
 	echo Setting random password...
-	teamviewer passwd "$password"
+	sleep 2
+	eval /usr/bin/teamviewer passwd "$password"
 	rm -f /tmp/teamviewer-host_armhf.deb
 	}
 
@@ -51,6 +56,7 @@ setup_environment() {
 	# THESE 2 LINES COULD BE ONE rm -rf /home/$finduser/Desktop/GencyberSteganography/
 	cd /home/$finduser/Desktop
 	rm -rf GencyberSteganography/
+	# GIT CLONE COULD BE REDIRECTED TO SPECIFIC DIR
 	git clone https://github.com/slayersec/GencyberSteganography
 
 	chown -R $finduser:$finduser /home/$finduser/Desktop/GencyberSteganography
@@ -62,7 +68,7 @@ setup_environment() {
 generate_password() {
 	#Generate a random string to use as a password.
 	#This password is not a secure method of generation and is only meant for temporary use.
-	#Do not share this password with anyone other then camp staff.
+	#Do not share this password with anyone other then campus staff.
 	chars=abcdefghijklmnopqrstuvwxyz123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 	symbolsonly=!@$*
 	password+=${symbolsonly:RANDOM%${#symbolsonly}:1}

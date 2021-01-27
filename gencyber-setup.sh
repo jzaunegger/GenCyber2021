@@ -5,7 +5,9 @@
 # git clone https://github.com/slayersec/GenCyber2021
 # Usage: sudo ./gencyber-setup.sh
 
-finduser=$(logname)
+# changed, logname does not exist on this distro
+finduser=$(who | head -1 | awk '{print$1}')
+
 connectid=""
 password=""
 
@@ -25,29 +27,37 @@ check_distro() {
 
 install_tools() {
 	apt update	
-	apt -y install wireshark
-	apt -y install ghex 
-	apt -y install ghex --fix-missing
-	apt -y install binwalk
-	apt -y install gedit
-	apt -y install steghide
-	apt -y install outguess
-	apt -y install foremost
+	apt -y reinstall wireshark
+	apt -y reinstall ghex 
+	apt -y reinstall ghex --fix-missing
+	apt -y reinstall binwalk
+	apt -y reinstall gedit
+	apt -y reinstall steghide
+	apt -y reinstall outguess
+	apt -y reinstall foremost
 	echo "Operation completed!"
+	}
+
+start_teamviewer_service() {
+	systemctl enable teamviewerd
+        systemctl start teamviewerd
+	}
+
+stop_teamviewer_service () {
+	systemctl disable teamviewerd 
+        systemctl stop teamviewerd 
 	}
 
 install_teamviewer() {
 	echo -e "Stopping any teamviewerd service if it exists, ignore any error here "        
-	systemctl disable teamviewerd 
-        systemctl stop teamviewerd 
+	stop_teamviewer_service
      	wget https://download.teamviewer.com/download/linux/teamviewer-host_armhf.deb -O /tmp/teamviewer-host_armhf.deb
 	dpkg -i /tmp/teamviewer-host_armhf.deb 
 	apt --fix-broken install
-        systemctl enable teamviewerd
-        systemctl start teamviewerd
 	echo Setting random password...
 	sleep 2
-	eval /usr/bin/teamviewer passwd "$password"
+	/usr/bin/teamviewer --passwd "$password" > /dev/null 2>&1
+	start_teamviewer_service 	
 	rm -f /tmp/teamviewer-host_armhf.deb
 	}
 
@@ -80,8 +90,13 @@ generate_password() {
 	}
 
 display_connect_info() {
+	echo -e "\nPlease wait... Setting up software\n "
+	sleep 5
 	#Retrieves connection information for students
-	connectid=$(cat /etc/teamviewer/global.conf | grep -i "ClientID" | cut -d " " -f4)
+	#	
+	# CHANGE THIS GREP -I "CLIENTID" to "CLIENT" your global.conf says ClientIC not ID
+	#
+	connectid=$(cat /home/$finduser/.config/teamviewer/client.conf | grep -i "ClientIDOfTSUser" | cut -d " " -f4)
         echo -e "      Your Teamviewer ID: $connectid \nYour Teamviewer Password: $password"
 	echo -e "      Your Teamviewer ID: $connectid \nYour Teamviewer Password: $password" > /home/$finduser/.stegolab_teamviewer
 	chown $finduser:$finduser /home/$finduser/.stegolab_teamviewer
@@ -111,4 +126,3 @@ generate_password
 install_teamviewer
 display_connect_info
 configure_quick_help
-

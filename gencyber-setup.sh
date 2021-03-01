@@ -63,10 +63,9 @@ install_teamviewer() {
 
 
 setup_environment() {
-	# THESE 2 LINES COULD BE ONE rm -rf /home/$finduser/Desktop/GencyberSteganography/
+	# COULD BE ONE rm -rf /home/$finduser/Desktop/GencyberSteganography/
 	cd /home/$finduser/Desktop
 	rm -rf GencyberSteganography/
-	# GIT CLONE COULD BE REDIRECTED TO SPECIFIC DIR
 	git clone https://github.com/slayersec/GencyberSteganography
 
 	chown -R $finduser:$finduser /home/$finduser/Desktop/GencyberSteganography
@@ -93,9 +92,6 @@ display_connect_info() {
 	echo -e "\nPlease wait... Setting up software\n "
 	sleep 5
 	#Retrieves connection information for students
-	#	
-	# CHANGE THIS GREP -I "CLIENTID" to "CLIENT" your global.conf says ClientIC not ID
-	#
 	connectid=$(cat /home/$finduser/.config/teamviewer/client.conf | grep -i "ClientIDOfTSUser" | cut -d " " -f4)
         echo -e "      Your Teamviewer ID: $connectid \nYour Teamviewer Password: $password"
 	echo -e "      Your Teamviewer ID: $connectid \nYour Teamviewer Password: $password" > /home/$finduser/.stegolab_teamviewer

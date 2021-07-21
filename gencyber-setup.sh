@@ -17,14 +17,7 @@ check_for_root () {
 	 exit
 	fi
 	}
-
-check_distro() {
-   	distro=$(cat /etc/os-release | grep -i -c "Raspbian GNU/Linux") # distro check
-	if [ $distro -ne 2 ]
-	 then echo -e "\n Sorry I only work on Raspbian GNU/Linux \n"; exit  # false
-	fi
-	}
-
+	
 install_tools() {
 	apt update	
 	apt -y reinstall wireshark
@@ -115,7 +108,6 @@ configure_quick_help() {
 
 
 check_for_root
-check_distro
 install_tools
 setup_environment
 generate_password
